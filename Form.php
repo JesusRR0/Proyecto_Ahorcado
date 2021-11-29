@@ -9,6 +9,7 @@
 </head>
 <body>
     <?php 
+    error_reporting(E_ALL);
     
     $adivinar =$_POST['adivinar'];
     $palabraInt = $_POST['palabraInt'];
@@ -28,11 +29,6 @@
             <?php
             }
             
-            //en caso de que no este vacio el arrayError se introduciran sus valores unserializados a la variable errores 
-            if(!empty($arrayError)){
-                $errores = unserialize($arrayError);
-            }
-            
             //en caso de que no este vacio el array se introduciran sus valores unserializados a la variable guion, sino se llega el array de '_' 
             if(!empty($array)){
                 $guion = unserialize($array);
@@ -45,22 +41,23 @@
                 }
                             
             }
-            echo $intento;
+
+            echo "INTENTOS:".$intento+1;
             if($intento<7){
-                print_r($letras);
+                
 
                 //se accede al condicional sino esta vacia el input de entrada de datos
                 if(!empty($palabraInt)){
                     
                     //se asignan los valores returnados de la funcion separarLetras y se le asignan a la variable $letras
-                    echo "asdfasdf";
+                    echo "PRIMER ECHO";
                     
                     $letras =separarLetras($adivinar);
                     print_r($letras);
                     
                     //se accede a la condicion en caso de que las letras introducidas se encuentren en el array $letras   
                     if(in_array($palabraInt,$letras)){ 
-                            echo "SI LA LETRA EXISTE ";
+                        echo "SEGUNDO ECHO";
                         //se guarda la posicion en la que se encuentra dentro de la palabra y en la mismo posicion del array $guion se sustituyen los guiones por cada letra 
                             $posicion = array_keys($letras,$palabraInt);
                             $guion[$posicion[0]] = $letras[$posicion[0]];
@@ -125,7 +122,7 @@
                         <?php
                         
                         //se incrementan los intentos haciendo que la imagen del muñeco cambie                
-                            ++$intento;
+                        echo "INTENTO REAL: ".++$intento;
                             
                             ?> 
                                 <img src='./img/ahorcado<?php echo $intento;?>.png'>
@@ -139,10 +136,14 @@
                         
                     }   
                 }
-
+            }else{
+                echo "HAS PERDIDO";
+            }
                 
                 //funcion para separar las letras de las palabras que se deberan adivinar
                 function separarLetras($adivinar){
+                    
+                    $letras = [];
                     //un bucle que se ejecutara segun la longitud de la palabra
                     for($i=1;$i<=strlen($adivinar);$i++){
                         //se en una variable la distancia negativa +1 para poder quitar las letras sobrantes a la cadena
@@ -174,9 +175,7 @@
             
                     </p>
                 <?php
-        }else{
-            echo "HAS PERDIDO";
-        }
+        
         ?>
 
         
